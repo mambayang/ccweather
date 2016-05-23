@@ -32,7 +32,11 @@ public class CCWeatherDB {
 		db = dbHelper.getWritableDatabase();
 	}
 
-	// 获取实例
+	/**
+	 * 获取实例
+	 * @param context
+	 * @return
+	 */
 	public synchronized static CCWeatherDB getInstance(Context context) {
 		if (ccWeatherDB == null) {
 			ccWeatherDB = new CCWeatherDB(context);
@@ -40,7 +44,10 @@ public class CCWeatherDB {
 		return ccWeatherDB;
 	}
 
-	// 将province实例存储到数据库
+	/**
+	 * 将province实例存储到数据库
+	 * @param province
+	 */
 	public void saveProvince(Province province) {
 		if (province != null) {
 			ContentValues contentValues = new ContentValues();
@@ -50,7 +57,10 @@ public class CCWeatherDB {
 		}
 	}
 
-	// 读取所有省份信息
+	/**
+	 * 读取所有省份信息
+	 * @return
+	 */
 	public List<Province> loadProvinces() {
 		List<Province> list = new ArrayList<Province>();
 		Cursor cursor = db.query(PROVINCE_TABLE, null, null, null, null, null,
@@ -72,7 +82,10 @@ public class CCWeatherDB {
 		return list;
 	}
 
-	// 将city实例存储到数据库
+	/**
+	 * 将city实例存储到数据库
+	 * @param city
+	 */
 	public void saveCity(City city) {
 		if (city != null) {
 			ContentValues contentValues = new ContentValues();
@@ -83,7 +96,11 @@ public class CCWeatherDB {
 		}
 	}
 
-	// 读取某省份的所有城市信息
+	/**
+	 * 读取某省份的所有城市信息
+	 * @param provinceId
+	 * @return
+	 */
 	public List<City> loadCities(int provinceId) {
 		List<City> list = new ArrayList<City>();
 		Cursor cursor = db.query(CITY_TABLE, null, "province_id = ?",
@@ -106,7 +123,10 @@ public class CCWeatherDB {
 		return list;
 	}
 
-	// 将county实例存储到数据库
+	/**
+	 * 将county实例存储到数据库
+	 * @param county
+	 */
 	public void saveCounty(County county) {
 		if (county != null) {
 			ContentValues contentValues = new ContentValues();
@@ -117,7 +137,11 @@ public class CCWeatherDB {
 		}
 	}
 
-	// 读取某城市的所有县信息
+	/**
+	 * 读取某城市的所有县信息
+	 * @param cityId
+	 * @return
+	 */
 	public List<County> loadCounties(int cityId) {
 		List<County> list = new ArrayList<County>();
 		Cursor cursor = db.query(COUNTY_TABLE, null, "city_id = ?",
