@@ -3,26 +3,27 @@ package com.ccweather.app.activity;
 import java.security.PublicKey;
 
 import com.ccweather.app.R;
-import com.ccweather.app.R.id;
-import com.ccweather.app.R.layout;
-import com.ccweather.app.R.menu;
 import com.ccweather.app.util.HttpCallbackListener;
 import com.ccweather.app.util.HttpUtil;
 import com.ccweather.app.util.Utility;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class WeatherActivity extends Activity {
+public class WeatherActivity extends Activity implements OnClickListener{
+	
+	private static final String TAG = "WeatherActivity";
 
 	private LinearLayout mLayoutWeatherInfo;
 	private TextView mTextCityName;
@@ -31,6 +32,9 @@ public class WeatherActivity extends Activity {
 	private TextView mTextTemp1;
 	private TextView mTextTemp2;
 	private TextView mTextCurrentDate;
+	
+	private Button mBtnSwitch;
+	private Button mBtnRefresh;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,17 +45,24 @@ public class WeatherActivity extends Activity {
 		mLayoutWeatherInfo = (LinearLayout) findViewById(R.id.layout_weather_info);
 		mTextCityName = (TextView) findViewById(R.id.text_city_name);
 		mTextPublish = (TextView) findViewById(R.id.text_publish);
+		mTextCurrentDate = (TextView)findViewById(R.id.text_current_date);
 		mTextWeatherDesp = (TextView) findViewById(R.id.text_weather_desp);
 		mTextTemp1 = (TextView) findViewById(R.id.text_temp1);
 		mTextTemp2 = (TextView) findViewById(R.id.text_temp2);
-		mTextCurrentDate = (TextView) findViewById(R.id.text_current_date);
+		mBtnSwitch = (Button) findViewById(R.id.button_switch_city);
+		mBtnRefresh = (Button) findViewById(R.id.button_refresh);
+		mBtnSwitch.setOnClickListener(this);
+		mBtnRefresh.setOnClickListener(this);
+		
 		String countyCode = getIntent().getStringExtra("county_code");
 		if (!TextUtils.isEmpty(countyCode)) {
+			Log.i(TAG, "county code not null");
 			mTextPublish.setText("同步中...");
 			mLayoutWeatherInfo.setVisibility(View.INVISIBLE);
 			mTextCityName.setVisibility(View.INVISIBLE);
 			queryWeatherCode(countyCode);
 		} else {
+			Log.i(TAG, "county code null");
 			showWeather();
 		}
 	}
@@ -73,6 +84,7 @@ public class WeatherActivity extends Activity {
 
 			@Override
 			public void onFinish(String response) {
+				Log.i(TAG, "response is .."+response);
 				if ("countyCode".equals(type)) {
 					if (!TextUtils.isEmpty(response)) {
 						String[] array = response.split("\\|");
@@ -82,12 +94,14 @@ public class WeatherActivity extends Activity {
 						}
 					}
 				} else if ("weatherCode".equals(type)) {
+					Log.i(TAG, "handle weather response");
 					Utility.handleWeatherResponse(WeatherActivity.this,
 							response);
 					runOnUiThread(new Runnable() {
 
 						@Override
 						public void run() {
+							Log.i(TAG, "showWeather");
 							showWeather();
 						}
 					});
@@ -120,23 +134,27 @@ public class WeatherActivity extends Activity {
 		mLayoutWeatherInfo.setVisibility(View.VISIBLE);
 		mTextCityName.setVisibility(View.VISIBLE);
 	}
-
+ 
+ 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.weather, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.button_switch_city:
+			Intent intent = new Intent(this, ChooseAreaActivity.class);
+			intent.putExtra("from_weather_activity", true);
+			startActivity(intent);
+			finish();
+			break;
+		case R.id.button_refresh:
+			mTextPublish.setText("同步中...");
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+			String weatherCode = preferences.getString("weather_code", "");
+			if (!TextUtils.isEmpty(weatherCode)) {
+				queryWeatherInfo(weatherCode);
+			}
+			break;
+		default:
+			break;
 		}
-		return super.onOptionsItemSelected(item);
 	}
 }

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.ccweather.app.db.CCWeatherDB;
 import com.ccweather.app.model.City;
@@ -19,6 +20,8 @@ import com.ccweather.app.model.County;
 import com.ccweather.app.model.Province;
 
 public class Utility {
+	
+	private static final String TAG = "Utility";
 
 	/**
 	 * 解析与存储服务器返回的省份数据
@@ -125,6 +128,7 @@ public class Utility {
 		editor.putString("temp2", temp2);
 		editor.putString("weather_desp", weatherDesp);
 		editor.putString("publish_time", publishTime);
+		Log.i(TAG, "current date is "+sdf.format(new Date()));
 		editor.putString("current_date", sdf.format(new Date()));
 		editor.commit();
 	}

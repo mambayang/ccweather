@@ -9,13 +9,31 @@
         android:layout_height="50dp"
         android:background="#484e61" >
 
+        <Button
+            android:id="@+id/button_switch_city"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/home" />
+
         <TextView
             android:id="@+id/text_city_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:text="北京"
             android:textColor="#fff"
             android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/button_refresh"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/refresh" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -31,6 +49,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+            android:text="早上发布"
             android:textColor="#fff"
             android:textSize="18sp" />
 
@@ -45,7 +64,9 @@
                 android:id="@+id/text_current_date"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center"
+                android:text="日期"
                 android:textColor="#fff"
                 android:textSize="18sp" />
 
@@ -55,6 +76,7 @@
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
+                android:text="描述"
                 android:textColor="#fff"
                 android:textSize="40sp" />
 
@@ -69,6 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:text="11"
                     android:textColor="#fff"
                     android:textSize="40sp" />
 
@@ -87,6 +110,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:text="11"
                     android:textColor="#fff"
                     android:textSize="40sp" />
             </LinearLayout>
