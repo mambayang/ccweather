@@ -3,6 +3,7 @@ package com.ccweather.app.activity;
 import java.security.PublicKey;
 
 import com.ccweather.app.R;
+import com.ccweather.app.service.AutoUpdateService;
 import com.ccweather.app.util.HttpCallbackListener;
 import com.ccweather.app.util.HttpUtil;
 import com.ccweather.app.util.Utility;
@@ -133,6 +134,8 @@ public class WeatherActivity extends Activity implements OnClickListener{
 		mTextCurrentDate.setText(preferences.getString("current_date", ""));
 		mLayoutWeatherInfo.setVisibility(View.VISIBLE);
 		mTextCityName.setVisibility(View.VISIBLE);
+		Intent intent = new Intent(this, AutoUpdateService.class);
+		startService(intent);
 	}
  
  
